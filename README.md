@@ -1,4 +1,4 @@
-# fuel
+# Fuel
 
 
 The paths folder contains all the protopaths for each path.
@@ -13,10 +13,10 @@ Dump_matching.json contains the stats from the runs of each path.
 
 ## Assumptions
 	A couple of assumptions include:
-		- Mowing averages 1.5 mpg
-		- Snow averages 1.33 mpg
+		- Mowing averages 1.5 MPG
+		- Snow averages 1.33 MPG
 			(according to Robotics)
 		- Percentage of fuel is based off a 13 gallons tank.
 		- Fuel consumption is based on time since engine is ALWAYS fully reved. 
-		
+
 

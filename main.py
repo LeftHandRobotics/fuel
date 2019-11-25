@@ -112,7 +112,6 @@ def add_average_time(path):
         if len(time_per_cm) == 0:
             time_per_cm.append(0)
 
-    # print(len(time_per_cm))
     median = statistics.median(sorted(time_per_cm))
 
     new_time_per_cm = []

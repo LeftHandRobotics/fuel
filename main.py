@@ -12,6 +12,22 @@ MOWING = False
 GALLONS_PER_TANK = 12
 
 
+class Fuel():
+    def __init__(self):
+        self.total_median = 0
+
+    def average_group_time(self):
+        # Get the average time for the entire data set
+        with open("paths_info.csv", 'r') as file:
+            times = []
+
+            reader = csv.reader(file)
+            for row in reader:
+                times.append(float(row[1]))
+
+        self.total_median = statistics.median(sorted(times))
+
+
 def create_master_file():
 
     with open('dump_matching.json', 'r') as f:
@@ -117,7 +133,7 @@ def add_average_time(path):
     new_time_per_cm = []
     for i, instance in enumerate(time_per_cm):
 
-        if time_per_cm[i] <= (median * 5) and time_per_cm[i] >= 0.0009:
+        if time_per_cm[i] <= (median * 4) and time_per_cm[i] >= 0.0009:
             new_time_per_cm.append(time_per_cm[i])
 
     if len(new_time_per_cm) == 0:
@@ -154,20 +170,7 @@ def get_average_time(path_name):
     # For first instance
     if average_time == 0:
         average_time = median  # 0.002
-    print(median)
     return average_time
-
-
-def average_group_time():
-    # Get the average time for the entire data set
-    with open("paths_info.csv", 'r') as file:
-        times = []
-
-        reader = csv.reader(file)
-        for row in reader:
-            times.append(float(row[1]))
-
-    return statistics.median(sorted(times))
 
 
 def estimate_fuel(raw_path, path_name, index):
@@ -193,7 +196,7 @@ def estimate_fuel(raw_path, path_name, index):
     gallons_needed = gallons_per_hour * (time_remaining / 3600)
     fuel_needed = gallons_needed / GALLONS_PER_TANK
 
-    print("PATH NAME: ", path_name, "FUEL NEEDED: ", fuel_needed, "MINUTES REMAINING: ", time_remaining / 60)
+    print("PATH NAME: ", path_name, "FUEL NEEDED: ", fuel_needed, "TIME PER DISTANCE: ", average_time, "distance_remaining", (total_distance - distance) / 100, "MINUTES REMAINING: ", time_remaining / 60)
     return fuel_needed
 
 
@@ -204,7 +207,7 @@ if __name__ == "__main__":
         add_average_time(path)
 
     median = average_group_time()
-
+    print(median)
     for path in os.listdir('paths/'):
         raw_path = open("paths/" + str(path), 'r')
         fuel_needed = estimate_fuel(raw_path, path, index=20)
